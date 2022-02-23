@@ -1,6 +1,7 @@
 package com.example.jetpacknavigationcomponent
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,9 +26,9 @@ class QuestionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val score = 0
-        val randNumber1 = Random.nextInt(1, 49).toString()
-        val randNumber2 = Random.nextInt(50, 100).toString()
+        var score = 0
+        var randNumber1 = Random.nextInt(1, 49).toString()
+        var randNumber2 = Random.nextInt(50, 100).toString()
         txtAngka1.setText(randNumber1)
         txtAngka2.setText(randNumber2)
 
@@ -37,12 +38,22 @@ class QuestionFragment : Fragment() {
         }
 
         btnSubmit.setOnClickListener {
-            val result = txtAngka1.text.toString() + txtAngka2.text.toString()
+            val angka1 = txtAngka1.text.toString()
+            val angka2 = txtAngka2.text.toString()
+            val result = (angka1.toInt() + angka2.toInt()).toString()
+            // Log.d(angka1, "checkangka1: ")
+            // Log.d(angka2, "checkangka2: ")
+            // Log.d(result, "checkresult: ")
+
             if (result == txtAnswer.text.toString()) {
-                score+1
-                txtAnswer.setText("")
-                randNumber1
-                randNumber2
+                score += 1
+                txtAnswer.text?.clear()
+                // untuk ambil value rand number baru
+                randNumber1 = Random.nextInt(1, 49).toString()
+                randNumber2 = Random.nextInt(50, 100).toString()
+                txtAngka1.setText(randNumber1)
+                txtAngka2.setText(randNumber2)
+                // Log.d(score.toString(), "checkscore:")
             } else {
                 val action = QuestionFragmentDirections.actionResultFragment(score)
                 Navigation.findNavController(it).navigate(action)
